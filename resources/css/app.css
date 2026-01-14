@@ -1,0 +1,15 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.font-title {
+    font-family: 'Playfair Display', serif;
+}
+
+.font-body {
+    font-family: 'Poppins', sans-serif;
+}
+
+.font-script {
+    font-family: 'Pacifico', cursive;
+}
