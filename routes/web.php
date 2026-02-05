@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\KontakController;
+
+
 
 Route::get('/', function () {
     return view('home');   // beranda
@@ -21,3 +24,6 @@ Route::get('/produk', function () {
 Route::get('/kontak', function () {
     return view('kontak');
 })->name('kontak');
+
+Route::post('/kontak/kirim', [KontakController::class, 'kirim'])
+    ->name('kontak.kirim');

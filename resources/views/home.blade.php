@@ -3,23 +3,33 @@
 
 @section('content')
 
+{{-- ======================== HEADER (NAVBAR) ======================== --}}
 <header class="relative text-white font-body z-40">
-
-    {{-- NAVBAR --}}
-    <nav id="navbar"
-         class="fixed top-0 left-0 w-full z-30 h-16 md:h-20 transition-all duration-300 bg-transparent">
-
-        <div id="navbar-inner"
-             class="max-w-7xl mx-auto px-6 h-full flex items-center">
-
+    <nav
+        id="navbar"
+        x-data="{ open: false }"
+        class="fixed top-0 left-0 w-full z-30 h-16 md:h-20 transition-all duration-300
+        {{ request()->routeIs('beranda') ? 'bg-transparent text-black' : 'bg-slate-800 text-white' }}"
+    >
+        <div
+            id="navbar-inner"
+            class="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between"
+        >
             {{-- Logo --}}
-            <a href="/" class="flex items-center h-full">
-                <img src="{{ asset('images/logo.png') }}" class="h-20 object-contain">
+            <a href="/" class="flex items-center h-full translate-y-5 -ml-8">
+                <img src="{{ asset('images/logo.png') }}" class="h-30 object-contain" alt="Logo">
             </a>
 
-            {{-- Menu --}}
-            <ul class="ml-auto flex gap-10 text-sm font-medium text-white">
+            {{-- Button Hamburger (Mobile) --}}
+            <button @click="open = !open" class="md:hidden focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
 
+            {{-- Menu Desktop --}}
+            <ul id="navMenu" class="hidden md:flex ml-auto gap-10 text-sm font-medium transition-colors duration-300">
                 @php
                     $menus = [
                         'beranda' => ['label' => 'Beranda', 'url' => route('beranda')],
@@ -32,117 +42,200 @@
 
                 @foreach ($menus as $routeName => $menu)
                     <li>
-                        <a href="{{ $menu['url'] }}"
-                           class="relative inline-block transition
-
-                                  {{ request()->routeIs($routeName) ? 'text-yellow-400' : '' }}
-
-                                  after:content-[''] after:absolute after:left-1/2
-                                  after:-translate-x-1/2 after:-bottom-1 after:h-[2px]
-                                  after:bg-yellow-400 after:transition-all after:duration-300
-
-                                  {{ request()->routeIs($routeName) ? 'after:w-full' : 'after:w-0' }}
-
-                                  hover:text-cyan-400 hover:after:w-full">
-
+                        <a
+                            href="{{ $menu['url'] }}"
+                            class="relative inline-block transition
+                            {{ request()->routeIs($routeName)
+                                ? 'bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent font-semibold'
+                                : '' }}
+                            after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px]
+                            after:bg-gradient-to-r after:from-green-400 after:to-cyan-400 after:transition-all after:duration-300
+                            {{ request()->routeIs($routeName) ? 'after:w-full' : 'after:w-0' }}
+                            hover:after:w-full"
+                        >
                             {{ $menu['label'] }}
                         </a>
                     </li>
                 @endforeach
-
             </ul>
+        </div>
 
+        {{-- Menu Mobile --}}
+        <div
+            x-show="open"
+            x-transition
+            @click.outside="open = false"
+            class="md:hidden bg-slate-800 px-6 pb-6 pt-4 space-y-4"
+        >
+            @foreach ($menus as $routeName => $menu)
+                <a
+                    href="{{ $menu['url'] }}"
+                    @click="open = false"
+                    class="block text-sm font-medium transition
+                    {{ request()->routeIs($routeName)
+                        ? 'bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent font-semibold'
+                        : 'text-white' }}
+                    hover:text-cyan-400"
+                >
+                    {{ $menu['label'] }}
+                </a>
+            @endforeach
         </div>
     </nav>
-
 </header>
+
+<script>
+    const navbar = document.getElementById('navbar');
+    const isBeranda = {{ request()->routeIs('beranda') ? 'true' : 'false' }};
+
+    if (isBeranda) {
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                // Saat scroll: navbar gelap, teks putih
+                navbar.classList.add('bg-slate-800', 'text-white');
+                navbar.classList.remove('bg-transparent', 'text-black');
+            } else {
+                // Di atas: navbar transparan, teks hitam
+                navbar.classList.add('bg-transparent', 'text-black');
+                navbar.classList.remove('bg-slate-800', 'text-white');
+            }
+        });
+    }
+</script>
 
 
 {{-- ================= BERANDA SECTION ================= --}}
-<section class="relative min-h-screen pt-28 md:pt-32 text-white">
+<section class="relative z-10 min-h-screen pt-28 md:pt-32 pb-24 bg-gradient-to-br from-white via-green-50 to-cyan-50 overflow-visible">
+    <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
+        {{-- ================= LEFT CONTENT ================= --}}
+        <div>
+            {{-- Badge + Rating --}}
+            <div class="flex items-center gap-4 mb-6">
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-green-500 to-blue-500 text-white text-sm font-semibold shadow">
+                    Apotek Terpercaya
+                </span>
 
-    {{-- Background image --}}
-    <img src="{{ asset('images/hero.jpg') }}"
-         class="absolute inset-0 w-full h-full object-cover -z-20">
+                <div class="flex items-center gap-2 text-yellow-400">
+                    ★★★★★
+                    <span class="text-slate-600 text-sm">(4.9/5.0)</span>
+                </div>
+            </div>
 
-    {{-- Overlay gelap (tidak nutup konten) --}}
-    <div class="absolute inset-0 bg-black/60 -z-10"></div>
-
-    {{-- HERO CONTENT --}}
-    <div class="relative z-20 max-w-7xl mx-auto px-6 flex items-center min-h-[calc(100vh-8rem)] -mt-6 md:-mt-10">
-
-
-        {{-- LEFT TEXT --}}
-        <div class="max-w-3xl">
-
-            <span class="text-white/80 mb-2 block">
-                Selamat Datang di Apotek
-                <span class="font-bold text-green-400">Bhakti</span>
-                <span class="font-bold text-cyan-400">Medika Farma</span>
-            </span>
-
-            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-4">
-                Solusi Layanan Kesehatan<br>
-                Terpercaya Untuk Anda
+            {{-- Headline --}}
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight text-slate-900 mb-4">
+                Solusi <span class="text-green-600">Kesehatan</span><br>
+                Keluarga Anda
             </h1>
 
-            <p class="text-white/90 text-lg leading-relaxed mb-8">
-                Kami menyediakan layanan pengecekan kesehatan seperti cek gula darah,
-                cek kolesterol, dan cek asam urat dengan cepat, akurat,
-                serta ditangani tenaga profesional.
+            {{-- Deskripsi --}}
+            <p class="text-slate-600 text-lg leading-relaxed mb-8 max-w-xl">
+                Dapatkan akses ke layanan pemeriksaan kesehatan, konsultasi dengan apoteker,
+                dan pelayanan terbaik untuk menjaga kesehatan Anda dan keluarga.
             </p>
 
-            {{-- CTA BUTTON --}}
-            <a href="/#kontak"
-               class="inline-flex items-center gap-2 px-7 py-3
-                       border border-green-400
-                      font-semibold rounded-lg
-                      shadow-xl  hover:-translate-y-0.5
-                      transition-all">
+            {{-- CTA Buttons --}}
+            <div class="flex flex-wrap gap-4">
+                <a
+                    href="https://wa.me/6282246740801"
+                    target="_blank"
+                    class="inline-flex items-center gap-2 px-7 py-3 bg-gradient-to-r from-green-500 to-cyan-500 text-white font-semibold rounded-lg shadow-lg hover:-translate-y-0.5 active:scale-95 active:shadow-md focus:outline-none focus:ring-4 focus:ring-green-300 transition-all duration-200"
+                >
+                    Hubungi Kami Sekarang →
+                </a>
 
-                Hubungi Kami
-
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5"
-                     fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-            </a>
-
-        </div>
-
-        {{-- GLASS CARD --}}
-        <div class="absolute right-10 bottom-0 translate-y-[45%]
-                w-72 md:w-80
-                bg-white/10 backdrop-blur-2xl
-                border border-white/30 rounded-2xl
-                shadow-2xl p-5 z-30">
-
-            <div class="text-sm text-white/80 mb-1">
-                Jadwal Operasional
+                <a
+                    href="https://www.google.com/maps/search/?api=1&query=Jl.+Moch.+Toha+No.77,+Cigereleng,+Regol,+Bandung"
+                    target="_blank"
+                    class="inline-flex items-center gap-2 px-7 py-3 border-2 border-green-500 text-green-600 font-semibold rounded-lg hover:bg-green-50 active:scale-95 active:bg-green-100 focus:outline-none focus:ring-4 focus:ring-green-200 transition-all duration-200"
+                >
+                    <img src="https://cdn-icons-png.flaticon.com/128/2838/2838912.png" alt="Lokasi" class="w-5 h-5 object-contain">
+                    <span>Lokasi Apotek</span>
+                </a>
             </div>
 
-            <div class="text-xl font-bold mb-4">
-                Jam Buka Apotek
-            </div>
-
-            <div class="space-y-2 text-white/90">
-                <div class="flex justify-between">
-                    <span>Senin – Jumat</span>
-                    <span class="font-semibold">08.00 – 20.00</span>
+            {{-- Stats --}}
+            <div class="grid grid-cols-3 gap-6 mt-12 max-w-xl">
+                <div>
+                    <div class="text-3xl font-extrabold text-cyan-600">14+</div>
+                    <div class="text-slate-600 text-sm">Tahun Pengalaman</div>
                 </div>
-
-                <div class="flex justify-between">
-                    <span>Sabtu – Minggu</span>
-                    <span class="font-semibold">Tutup</span>
+                <div>
+                    <div class="text-3xl font-extrabold text-cyan-600">50K+</div>
+                    <div class="text-slate-600 text-sm">Pelanggan Setia</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-extrabold text-cyan-600">5000+</div>
+                    <div class="text-slate-600 text-sm">Produk Tersedia</div>
                 </div>
             </div>
-            
         </div>
 
+        {{-- ================= RIGHT IMAGE ================= --}}
+        <div class="relative">
+            <div class="overflow-hidden rounded-3xl shadow-2xl">
+                <img src="{{ asset('images/hero2.jpg') }}" class="w-full h-[480px] object-cover" alt="Hero">
+            </div>
+
+            {{-- Card: 100% Original --}}
+            <div class="absolute top-0 -left-6 bg-white rounded-2xl shadow-lg p-4 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-cyan-500 flex items-center justify-center">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1962/1962520.png" alt="Original" class="w-6 h-6 object-contain">
+                </div>
+                <div>
+                    <div class="font-bold text-slate-900">100% Original</div>
+                    <div class="text-sm text-slate-600">Produk Terjamin</div>
+                </div>
+            </div>
+
+            {{-- Card: Jam Buka --}}
+            <div class="absolute top-1/2 -right-4 -translate-y-1/2 bg-white rounded-2xl shadow-lg p-4 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-green-500 to-cyan-500 flex items-center justify-center">
+                    <img src="https://cdn-icons-png.flaticon.com/128/15826/15826325.png" alt="Jam Operasional" class="w-6 h-6 object-contain">
+                </div>
+                <div>
+                    <div class="font-bold text-slate-900">Senin–Sabtu</div>
+                    <div class="text-sm text-slate-600">08:00 – 22:00 WIB</div>
+                </div>
+            </div>
+
+            {{-- Card: Konsultasi Gratis --}}
+            <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 bg-gradient-to-r from-green-500 to-cyan-500 text-white rounded-2xl shadow-xl p-5 flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+                    <img src="https://cdn-icons-png.flaticon.com/128/1692/1692130.png" alt="Konsultasi" class="w-6 h-6 object-contain">
+                </div>
+                <div>
+                    <div class="font-bold">Konsultasi Gratis</div>
+                    <div class="text-sm text-white/90">dengan Apoteker</div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
+
+
+<script>
+    const toggleBtn = document.getElementById('toggleSchedule');
+    const card = document.getElementById('scheduleCard');
+
+    let open = false;
+
+    if (toggleBtn && card) {
+        toggleBtn.addEventListener('click', () => {
+            open = !open;
+
+            if (open) {
+                card.classList.remove('translate-x-full');
+                toggleBtn.innerText = '◀';
+            } else {
+                card.classList.add('translate-x-full');
+                toggleBtn.innerText = '▶';
+            }
+        });
+    }
+</script>
+
+
 
 
 
@@ -191,7 +284,7 @@
 
             <a href="/tentang-kami"
                class="inline-flex items-center justify-center
-                      bg-yellow-400 hover:bg-cyan-500
+                      bg-gradient-to-r from-green-500 to-blue-600
                       text-white font-semibold
                       px-8 py-3 rounded-lg
                       transition-all duration-300
@@ -254,7 +347,7 @@
         {{-- FOTO BACKGROUND --}}
         <div
             class="absolute inset-0 bg-cover bg-right"
-            style="background-image: url('{{ asset('images/layanan.jpg') }}');">
+            style="background-image: url('{{ asset('images/cek-layanan.jpg') }}');">
         </div>
 
         {{-- GRADIENT OVERLAY --}}
@@ -329,7 +422,7 @@
 
         </div>
 
-    </div> {{-- <- ini tadi belum ditutup, sekarang sudah benar --}}
+    </div>
 
 </section>
 
@@ -343,7 +436,7 @@
         use Illuminate\Support\Str;
     @endphp
 
-    {{-- WATERMARK (FIX TIDAK MENUMPUK) --}}
+    {{-- WATERMARK --}}
     <div
         class="absolute inset-0 pointer-events-none opacity-[0.05]"
         style="
@@ -376,7 +469,6 @@
 
         {{-- HEADER --}}
         <div class="flex items-start justify-between mb-20">
-
             <div class="max-w-3xl">
                 <p class="text-base md:text-lg lg:text-xl font-semibold text-slate-600 mb-4">
                     Apotek Bhakti Medika Farma
@@ -392,7 +484,6 @@
                     untuk Solusi Kesehatan Anda.”
                 </p>
             </div>
-
         </div>
 
         {{-- GRID PRODUK --}}
@@ -410,10 +501,9 @@
 
             @foreach ($products as [$label, $icon, $text])
 
-            {{-- CARD KATEGORI MENJADI LINK --}}
-            <a
-                href="{{ route('produk') }}?kategori={{ Str::slug($label) }}"
-                class="relative group bg-white rounded-3xl shadow-xl p-8 block overflow-hidden
+            {{-- CARD (BUKAN LINK) --}}
+            <div
+                class="relative group bg-white rounded-3xl shadow-xl p-6 block overflow-hidden
                        transition-all duration-500 hover:-translate-y-2"
             >
 
@@ -438,18 +528,23 @@
                         {{ $text }}
                     </p>
 
-                    {{-- PANAH --}}
-                    <div
-                        class="mt-6 w-9 h-9 rounded-full border flex items-center justify-center
-                               transition-all duration-500 group-hover:translate-x-1
-                               group-hover:bg-yellow-400 group-hover:shadow-[0_0_25px_rgba(250,204,21,0.6)]"
+                    {{-- PANAH (INI SAJA YANG BISA DIKLIK) --}}
+                    <a
+                        href="{{ route('produk') }}?kategori={{ Str::slug($label) }}"
+                        class="inline-flex mt-6 w-9 h-9 rounded-full border border-green-400
+                               items-center justify-center
+                               transition-all duration-500
+                               hover:translate-x-1
+                               hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400
+                               hover:shadow-[0_0_25px_rgba(34,197,94,0.5)]"
+                        title="Lihat produk"
                     >
                         →
-                    </div>
+                    </a>
 
                 </div>
 
-            </a>
+            </div>
 
             @endforeach
 
@@ -461,13 +556,32 @@
 
 
 
+
 {{-- ================= MARKETPLACE ================= --}}
 <section
     id="marketplace"
     x-data="{ show:false }"
     x-intersect.once="show = true"
-    class="py-24 bg-white text-center"
+    class="relative py-28 text-center overflow-hidden
+           bg-gradient-to-br from-emerald-50 via-white to-sky-50"
 >
+
+    {{-- ORNAMEN BLUR ATAS KIRI --}}
+    <div class="absolute -top-32 -left-32 w-[400px] h-[400px]
+                bg-emerald-200/40 rounded-full blur-3xl"></div>
+
+    {{-- ORNAMEN BLUR BAWAH KANAN --}}
+    <div class="absolute -bottom-32 -right-32 w-[400px] h-[400px]
+                bg-sky-200/40 rounded-full blur-3xl"></div>
+
+    <!-- WRAPPER ANIMASI -->
+    <div
+        x-show="show"
+        x-transition.duration.800ms
+        class="relative opacity-0 transform translate-y-8"
+        x-bind:class="show ? 'opacity-100 translate-y-0' : ''"
+    >
+
 
     <!-- WRAPPER ANIMASI -->
     <div
@@ -598,38 +712,60 @@
                 Hubungi kami melalui formulir atau kontak di bawah ini.
             </p>
 
-            <form class="space-y-4">
-                <input
-                    class="w-full p-3 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                    placeholder="Full Name"
-                >
 
-                <input
-                    class="w-full p-3 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                    placeholder="Your Email"
-                >
 
-                <input
-                    class="w-full p-3 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                    placeholder="Phone"
-                >
+<form action="{{ route('kontak.kirim') }}" method="POST" class="space-y-4">
+    @csrf
 
-                <textarea
-                    class="w-full p-3 rounded-lg shadow h-32 resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                    placeholder="Message"
-                ></textarea>
+    <input
+        type="text"
+        name="nama"
+        required
+        class="w-full p-3 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        placeholder="Full Name"
+    >
 
-                {{-- BUTTON --}}
-                <button
-                    type="submit"
-                    class="mt-4 w-full md:w-auto px-8 py-3
-                           bg-yellow-400 text-gray-900 font-semibold
-                           rounded-lg shadow
-                           hover:bg-yellow-500 transition"
-                >
-                    Kirim Pesan
-                </button>
-            </form>
+    <input
+        type="email"
+        name="email"
+        required
+        class="w-full p-3 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        placeholder="Your Email"
+    >
+
+    <input
+        type="text"
+        name="telepon"
+        class="w-full p-3 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        placeholder="Phone"
+    >
+
+    <textarea
+        name="pesan"
+        required
+        class="w-full p-3 rounded-lg shadow h-32 resize-none focus:outline-none focus:ring-2 focus:ring-yellow-400"
+        placeholder="Message"
+    ></textarea>
+
+    <button
+        type="submit"
+        class="inline-flex items-center justify-center
+                      bg-gradient-to-r from-green-500 to-blue-600
+                      text-white font-semibold
+                      px-8 py-3 rounded-lg
+                      transition-all duration-300
+                      hover:scale-105 hover:shadow-xl">
+        Kirim Pesan 
+    </button>
+
+    @if(session('success'))
+        <div class="mt-4 p-4 bg-green-100 text-green-700 rounded-lg">
+            {{ session('success') }}
+        </div>
+    @endif
+</form>
+
+
         </div>
 
         {{-- MAP --}}
@@ -680,7 +816,7 @@
                 </div>
 
                 <h4 class="font-semibold mb-1 text-gray-800">
-                    Operating Hours
+                    Jam Operasional
                 </h4>
 
                 <p class="text-sm text-gray-600">
@@ -800,18 +936,18 @@
 
 
 {{-- ================= FOOTER ================= --}}
-<footer class="bg-gradient-to-b from-slate-900 to-slate-950 text-gray-300 pt-20">
+<footer class="bg-gradient-to-b from-slate-800 to-slate-950 text-gray-300 pt-16">
 
-    <div class="max-w-7xl mx-auto px-6 grid gap-16 md:grid-cols-3">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 grid gap-12 md:gap-16 md:grid-cols-3">
 
         {{-- ================= BRAND ================= --}}
-        <div>
+        <div class="text-center md:text-left">
 
             {{-- LOGO --}}
-            <div class="flex items-center gap-3 mb-5">
+            <div class="flex items-center justify-center md:justify-start gap-3 mb-5">
                 <img src="{{ asset('images/logo-apotek.svg') }}"
                      alt="Apotek Bhakti Medika Farma"
-                     class="h-9 w-auto">
+                     class="h-10 w-auto">
 
                 <span class="text-xl font-semibold text-white">
                     Bhakti Medika Farma
@@ -819,63 +955,60 @@
             </div>
 
             {{-- DESKRIPSI --}}
-            <p class="text-sm leading-relaxed text-white max-w-xs mb-6">
+            <p class="text-sm leading-relaxed text-white max-w-xs mx-auto md:mx-0 mb-6">
                 Menyediakan produk kesehatan berkualitas, aman,
                 dan terpercaya untuk kebutuhan keluarga Anda.
             </p>
 
             {{-- MARKETPLACE / SOSIAL ICON --}}
-            <div class="flex items-center gap-4">
+            <div class="flex items-center justify-center md:justify-start gap-4">
 
-                {{-- TikTok --}}
                 <a href="https://vt.tiktok.com/ZS5HehMDs/?page=Mall"
-                target="_blank"
-                   class="text-gray-400 hover:text-gray-200 transition duration-300">
+                   target="_blank"
+                   class="hover:opacity-100 transition">
                     <img src="{{ asset('images/tiktok-ft.png') }}"
-                         alt="Tokopedia"
-                         class="w-5 h-5 opacity-80 hover:opacity-100 transition">
+                         alt="TikTok"
+                         class="w-5 h-5 opacity-80">
                 </a>
 
-                {{-- Tokopedia --}}
                 <a href="https://tk.tokopedia.com/ZS5m7LkSk/"
-                target="_blank"
-                   class="text-gray-400 hover:text-gray-200 transition duration-300">
+                   target="_blank"
+                   class="hover:opacity-100 transition">
                     <img src="{{ asset('images/tokopedia-ft.png') }}"
                          alt="Tokopedia"
-                         class="w-6 h-6 opacity-80 hover:opacity-100 transition">
+                         class="w-6 h-6 opacity-80">
                 </a>
 
-                {{-- Lazada --}}
                 <a href="https://www.lazada.co.id/shop/apotek-bhakti-medika-farma/?spm=a2o4j.pdp_revamp.seller.1.65d64dff2BgHkW&itemId=8778758839&channelSource=pdp"
-                target="_blank"
-                   class="text-gray-400 hover:text-gray-200 transition duration-300">
+                   target="_blank"
+                   class="hover:opacity-100 transition">
                     <img src="{{ asset('images/lazada-ft.png') }}"
-                         alt="Shopee"
-                         class="w-8 h-8 opacity-80 hover:opacity-100 transition">
+                         alt="Lazada"
+                         class="w-8 h-8 opacity-80">
                 </a>
 
             </div>
         </div>
 
         {{-- ================= LINK CEPAT ================= --}}
-        <div class="ml-56">
+        <div class="text-center md:text-left md:pl-56">
 
             <p class="text-lg font-semibold text-white mb-6">
                 Link Cepat
             </p>
 
             <ul class="space-y-3 text-sm">
-                <li><a href="/" class="hover:text-yellow-400 transition">Beranda</a></li>
-                <li><a href="/tentang-kami" class="hover:text-yellow-400 transition">Tentang Kami</a></li>
-                <li><a href="/layanan" class="hover:text-yellow-400 transition">Layanan</a></li>
-                <li><a href="/produk" class="hover:text-yellow-400 transition">Produk</a></li>
-                <li><a href="/#kontak" class="hover:text-yellow-400 transition">Kontak</a></li>
+                <li><a href="/" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Beranda</a></li>
+                <li><a href="/tentang-kami" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Tentang Kami</a></li>
+                <li><a href="/layanan" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Layanan</a></li>
+                <li><a href="/produk" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Produk</a></li>
+                <li><a href="/#kontak" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Kontak</a></li>
             </ul>
 
         </div>
 
         {{-- ================= CONTACT INFO ================= --}}
-        <div>
+        <div class="text-center md:text-left">
 
             <p class="text-lg font-semibold text-white mb-6">
                 Contact Info
@@ -884,66 +1017,66 @@
             <ul class="space-y-4 text-sm text-gray-300">
 
                 {{-- EMAIL --}}
-                <li class="flex items-center gap-4">
+                <li class="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start gap-3 md:gap-4">
                     <svg class="w-5 h-5 text-white"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="2"
-                         viewBox="0 0 24 24">
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24">
                         <path d="M4 4h16v16H4z"></path>
                         <path d="M22 6l-10 7L2 6"></path>
                     </svg>
 
                     <a href="mailto:bhaktimedikafarma2@gmail.com"
-                       class="hover:text-yellow-400 transition">
+                    class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">
                         bhaktimedikafarma2@gmail.com
                     </a>
                 </li>
 
                 {{-- TELEPON --}}
-                <li class="flex items-center gap-4">
+                <li class="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start gap-3 md:gap-4">
                     <svg class="w-5 h-5 text-white"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="2"
-                         viewBox="0 0 24 24">
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24">
                         <path d="M22 16.92V21a2 2 0 01-2.18 2
-                                 19.79 19.79 0 01-8.63-3.07
-                                 19.5 19.5 0 01-6-6
-                                 19.79 19.79 0 01-3.07-8.67
-                                 A2 2 0 014 3h4.09
-                                 a2 2 0 012 1.72
-                                 12.05 12.05 0 00.57 2.57
-                                 2 2 0 01-.45 2.11L9.09 10.91
-                                 a16 16 0 006 6l1.51-1.51
-                                 a2 2 0 012.11-.45
-                                 12.05 12.05 0 002.57.57
-                                 a2 2 0 011.72 2z"></path>
+                                19.79 19.79 0 01-8.63-3.07
+                                19.5 19.5 0 01-6-6
+                                19.79 19.79 0 01-3.07-8.67
+                                A2 2 0 014 3h4.09
+                                a2 2 0 012 1.72
+                                12.05 12.05 0 00.57 2.57
+                                2 2 0 01-.45 2.11L9.09 10.91
+                                a16 16 0 006 6l1.51-1.51
+                                a2 2 0 012.11-.45
+                                12.05 12.05 0 002.57.57
+                                a2 2 0 011.72 2z"></path>
                     </svg>
 
                     <a href="https://wa.me/6282246740801"
-                       target="_blank"
-                       class="hover:text-yellow-400 transition">
+                    target="_blank"
+                    class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">
                         +62 822-4674-0801
                     </a>
                 </li>
 
                 {{-- ALAMAT --}}
-                <li class="flex items-start gap-4">
-                    <svg class="w-5 h-5 text-white mt-0.5"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="2"
-                         viewBox="0 0 24 24">
+                <li class="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start gap-3 md:gap-4">
+                    <svg class="w-5 h-5 text-white mt-0.5 md:mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24">
                         <path d="M12 21s-6-5.686-6-10
-                                 a6 6 0 1112 0
-                                 c0 4.314-6 10-6 10z"></path>
+                                a6 6 0 1112 0
+                                c0 4.314-6 10-6 10z"></path>
                         <circle cx="12" cy="11" r="2"></circle>
                     </svg>
 
                     <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Moch.+Toha+No.77,+Cigereleng,+Regol,+Bandung"
-                       target="_blank"
-                       class="hover:text-yellow-400 transition">
+                    target="_blank"
+                    class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">
                         Apotek Bhakti Medika Farma<br>
                         Jl. Moch. Toha No.77, Cigereleng<br>
                         Kec. Regol, Kota Bandung<br>
@@ -954,20 +1087,17 @@
             </ul>
         </div>
 
+
     </div>
 
     {{-- DIVIDER --}}
-    <div class="border-t border-slate-800 mt-16"></div>
+    <div class="border-t border-slate-800 mt-14"></div>
 
     {{-- COPYRIGHT --}}
-    <div class="text-center py-6 text-sm text-gray-500">
+    <div class="text-center py-6 text-sm text-gray-500 px-4">
         © 2025 Apotek Bhakti Medika Farma. All rights reserved.
     </div>
 
 </footer>
-
-
-
-
 
 @endsection

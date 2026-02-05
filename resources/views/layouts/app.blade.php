@@ -27,20 +27,27 @@
 
     {{-- Navbar Scroll Script --}}
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
         const navbar = document.getElementById('navbar');
 
-        window.addEventListener('scroll', function () {
-            if (window.scrollY > 50) {
-                navbar.classList.remove('bg-transparent');
-                navbar.classList.add('bg-black/90', 'backdrop-blur-md', 'shadow-lg');
-            } else {
-                navbar.classList.add('bg-transparent');
-                navbar.classList.remove('bg-black/90', 'backdrop-blur-md', 'shadow-lg');
-            }
-        });
-    });
+        const isBeranda = {{ request()->routeIs('beranda') ? 'true' : 'false' }};
+
+        if (isBeranda) {
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('bg-slate-800');
+                    navbar.classList.remove('bg-transparent');
+                } else {
+                    navbar.classList.add('bg-transparent');
+                    navbar.classList.remove('bg-slate-800');
+                }
+            });
+        } else {
+            // Halaman lain: paksa selalu solid
+            navbar.classList.add('bg-slate-800');
+            navbar.classList.remove('bg-transparent');
+        }
     </script>
+
 
 </body>
 </html>

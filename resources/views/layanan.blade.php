@@ -3,54 +3,95 @@
 
 @section('content')
 
-{{-- ======================== HEADER & NAVBAR ======================== --}}
-<header>
+{{-- ======================== HEADER (NAVBAR) ======================== --}}
+<header class="relative text-white font-body z-40">
 
-{{-- NAVBAR (TIDAK DIUBAH) --}}
-<nav class="fixed top-0 left-0 w-full z-30 h-16 md:h-20 bg-black">
+    {{-- NAVBAR --}}
+    <nav id="navbar"
+        x-data="{ open: false }"
+        class="fixed top-0 left-0 w-full z-30 h-16 md:h-20
+               bg-slate-800/95 backdrop-blur shadow-lg
+               transition-all duration-300">
 
-    <div class="max-w-7xl mx-auto px-6 h-full flex items-center">
+        <div id="navbar-inner"
+            class="max-w-7xl mx-auto px-4 md:px-6 h-full flex items-center justify-between">
 
-        {{-- Logo --}}
-        <a href="/" class="flex items-center h-full">
-            <img src="{{ asset('images/logo.png') }}" class="h-20  object-contain">
-        </a>
-
-{{-- Menu --}}
-<ul class="ml-auto flex gap-10 text-sm font-medium text-white">
-
-    @php
-        $menus = [
-            'beranda' => ['label' => 'Beranda', 'url' => route('beranda')],
-            'tentang' => ['label' => 'Tentang Kami', 'url' => route('tentang')],
-            'layanan' => ['label' => 'Layanan', 'url' => route('layanan')],
-            'produk' => ['label' => 'Produk', 'url' => route('produk')],
-            'kontak' => ['label' => 'Kontak & Alamat', 'url' => route('beranda') . '#kontak'],
-    ];
-    @endphp
-
-    @foreach ($menus as $routeName => $menu)
-        <li>
-            <a href="{{ $menu['url'] }}"
-               class="relative inline-block transition
-                      {{ request()->routeIs($routeName) ? 'text-yellow-400' : '' }}
-                      after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2
-                      after:-bottom-1 after:h-[2px] after:bg-yellow-400
-                      after:transition-all after:duration-300
-                      {{ request()->routeIs($routeName)  ? 'after:w-full' : 'after:w-0' }}
-                      hover:text-cyan-400 hover:after:w-full">
-                {{ $menu['label'] }}
+            {{-- Logo --}}
+            <a href="/" class="flex items-center h-full translate-y-5 -ml-8">
+            <img src="{{ asset('images/logo.png') }}" class="h-30 object-contain">
             </a>
-        </li>
-    @endforeach
 
-</ul>
+            {{-- Button Hamburger (Mobile) --}}
+            <button @click="open = !open"
+                    class="md:hidden text-white focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
 
-    </div>
+            {{-- Menu Desktop --}}
+            <ul class="hidden md:flex ml-auto gap-10 text-sm font-medium text-white">
 
-</nav>
+                @php
+                    $menus = [
+                        'beranda' => ['label' => 'Beranda', 'url' => route('beranda')],
+                        'tentang' => ['label' => 'Tentang Kami', 'url' => route('tentang')],
+                        'layanan' => ['label' => 'Layanan', 'url' => route('layanan')],
+                        'produk'  => ['label' => 'Produk', 'url' => route('produk')],
+                        'kontak'  => ['label' => 'Kontak & Alamat', 'url' => route('beranda') . '#kontak'],
+                    ];
+                @endphp
+
+                @foreach ($menus as $routeName => $menu)
+                    <li>
+                        <a href="{{ $menu['url'] }}"
+                           class="relative inline-block transition
+
+                           {{ request()->routeIs($routeName)
+                                ? 'bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent font-semibold'
+                                : 'text-white' }}
+
+                           after:content-[''] after:absolute after:left-1/2
+                           after:-translate-x-1/2 after:-bottom-1 after:h-[2px]
+                           after:bg-gradient-to-r after:from-green-400 after:to-cyan-400
+                           after:transition-all after:duration-300
+
+                           {{ request()->routeIs($routeName) ? 'after:w-full' : 'after:w-0' }}
+
+                           hover:after:w-full">
+                            {{ $menu['label'] }}
+                        </a>
+                    </li>
+                @endforeach
+
+            </ul>
+        </div>
+
+        {{-- Menu Mobile --}}
+        <div x-show="open"
+             x-transition
+             @click.outside="open = false"
+             class="md:hidden bg-slate-900/95 backdrop-blur px-6 pb-6 pt-4 space-y-4 shadow-lg">
+
+            @foreach ($menus as $routeName => $menu)
+                <a href="{{ $menu['url'] }}"
+                   @click="open = false"
+                   class="block text-sm font-medium transition
+                   {{ request()->routeIs($routeName)
+                        ? 'bg-gradient-to-r from-green-400 to-cyan-400 bg-clip-text text-transparent font-semibold'
+                        : 'text-white' }}
+                   hover:text-cyan-400">
+                    {{ $menu['label'] }}
+                </a>
+            @endforeach
+        </div>
+
+    </nav>
 
 </header>
+
 
 
 {{-- ======================== HERO SECTION ======================== --}}
@@ -61,8 +102,8 @@
 
     {{-- IMAGE FULL-WIDTH + SLOW ZOOM --}}
     <div
-        class="absolute inset-0 bg-cover bg-center scale-105 animate-heroZoom"
-        style="background-image:url('{{ asset('images/about.jpg') }}')">
+        class="absolute inset-0 bg-cover bg-center scale-95 animate-heroZoom"
+        style="background-image:url('{{ asset('images/Layanan.jpg') }}')">
     </div>
 
     {{-- OVERLAY PUTIH SANGAT TIPIS (biar teks tetap terbaca) --}}
@@ -76,7 +117,7 @@
         </h1>
 
         <p class="text-slate-700 text-lg md:text-xl leading-relaxed max-w-3xl opacity-0 animate-fadeUpDelay">
-            Nikamti bebagai layanan pemeriksaan kesehatan yang kami sediakan untuk
+            Nikmati bebagai layanan pemeriksaan kesehatan yang kami sediakan untuk
             mendukung kesehatan Anda dan keluarga.
         </p>
 
@@ -121,189 +162,459 @@
 
 
 {{-- ======================== SECTION KARTU LAYANAN ======================== --}}
-<section class="relative max-w-7xl mx-auto px-6 pb-24 -mt-10">
+<section class="relative max-w-7xl mx-auto px-6 pt-10 pb-24">
 
-    {{-- CARD CONTAINER --}}
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
 
-        {{-- ============== CARD 1 – CEK GULA DARAH ============== --}}
-        <div
-            class="bg-white rounded-2xl shadow-lg p-8 border border-slate-100 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300">
+        {{-- ================= CARD GULA DARAH ================= --}}
+        <div class="service-card relative bg-white rounded-2xl border border-slate-200 p-6
+                    overflow-hidden
+                    hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
 
-            <div class="w-14 h-14 rounded-full bg-red-100 flex items-center justify-center mb-4">
-                🩸
+            {{-- WATERMARK --}}
+            <div class="watermark absolute inset-0 z-0 pointer-events-none
+                        opacity-10 blur-sm transition-all duration-500">
+                <img src="{{ asset('images/layanan/gula-darah.png') }}"
+                    class="w-full h-full object-cover">
             </div>
 
-            <h3 class="text-2xl font-bold text-slate-800 mb-2">
-                Cek Gula Darah
-            </h3>
+            {{-- CONTENT --}}
+            <div class="relative z-10">
 
-            <p class="text-slate-600 leading-relaxed">
-                Pemeriksaan kadar glukosa darah untuk deteksi dini diabetes
-                dan memantau kondisi kesehatan Anda secara berkala.
-            </p>
+                <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-6">
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/128/7792/7792556.png"
+                        alt="Icon"
+                        class="w-6 h-6 object-contain"
+                    >
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900 mb-2">
+                    Cek Gula Darah
+                </h3>
+
+                <p class="text-sm text-slate-600 mb-6">
+                    Pemeriksaan kadar gula darah sewaktu
+                </p>
+
+                <div class="mb-6">
+                    <span class="text-sm text-slate-600">Rp</span>
+                    <span class="text-3xl font-bold text-blue-600">10.000</span>
+                    <span class="text-sm text-slate-600"> / pemeriksaan</span>
+                </div>
+
+                <hr class="mb-6">
+
+                <ul class="space-y-3 text-sm text-slate-700">
+                    <li>✔ Pemeriksaan cepat & akurat</li>
+                    <li>✔ Hasil dalam 5 menit</li>
+                    <li>✔ Alat modern dan steril</li>
+                    <li>✔ Konsultasi hasil gratis</li>
+                    <li>✔ Laporan cetak</li>
+                </ul>
+
+                <a href="https://wa.me/6282246740801"
+                target="_blank"
+                class="order-btn mt-8 w-full py-3 rounded-xl border border-slate-300
+                        font-semibold transition text-center block">
+                    Pesan Sekarang
+                </a>
+
+            </div>
         </div>
 
-        {{-- ============== CARD 2 – CEK KOLESTEROL ============== --}}
-        <div
-            class="bg-white rounded-2xl shadow-lg p-8 border border-slate-100 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300">
+        {{-- ================= CARD KOLESTEROL ================= --}}
+        <div class="service-card relative bg-white rounded-2xl border border-slate-200 p-6
+                    overflow-hidden
+                    hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
 
-            <div class="w-14 h-14 rounded-full bg-yellow-100 flex items-center justify-center mb-4">
-                🫀
+            {{-- WATERMARK --}}
+            <div class="watermark absolute inset-0 z-0 pointer-events-none
+                        opacity-10 blur-sm transition-all duration-500">
+                <img src="{{ asset('images/layanan/kolesterol.png') }}"
+                    class="w-full h-full object-cover">
             </div>
 
-            <h3 class="text-2xl font-bold text-slate-800 mb-2">
-                Cek Kolesterol
-            </h3>
+            {{-- CONTENT --}}
+            <div class="relative z-10">
 
-            <p class="text-slate-600 leading-relaxed">
-                Pemeriksaan kadar kolesterol total, membantu mencegah risiko
-                penyakit jantung dan gangguan pembuluh darah.
-            </p>
+                <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-6">
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/128/10835/10835648.png"
+                        alt="Icon"
+                        class="w-6 h-6 object-contain"
+                    >
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900 mb-2">
+                    Cek Kolesterol
+                </h3>
+
+                <p class="text-sm text-slate-600 mb-6">
+                    Pemeriksaan kadar kolesterol total
+                </p>
+
+                <div class="mb-6">
+                    <span class="text-sm text-slate-600">Rp</span>
+                    <span class="text-3xl font-bold text-green-600">23.000</span>
+                    <span class="text-sm text-slate-600"> / pemeriksaan</span>
+                </div>
+
+                <hr class="mb-6">
+
+                <ul class="space-y-3 text-sm text-slate-700">
+                    <li>✔ Cek kolesterol total</li>
+                    <li>✔ Teknologi terkini</li>
+                    <li>✔ Hasil akurat & terpercaya</li>
+                    <li>✔ Konsultasi apoteker</li>
+                    <li>✔ Rekomendasi pola hidup sehat</li>
+                </ul>
+
+                <a href="https://wa.me/6282246740801"
+                target="_blank"
+                class="order-btn mt-8 w-full py-3 rounded-xl border border-slate-300
+                        font-semibold transition text-center block">
+                    Pesan Sekarang
+                </a>
+
+            </div>
         </div>
 
-        {{-- ============== CARD 3 – CEK ASAM URAT ============== --}}
-        <div
-            class="bg-white rounded-2xl shadow-lg p-8 border border-slate-100 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300">
 
-            <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-4">
-                🦶
+        {{-- ================= CARD ASAM URAT ================= --}}
+        <div class="service-card relative bg-white rounded-2xl border border-slate-200 p-6
+                    overflow-hidden
+                    hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+
+            {{-- WATERMARK --}}
+            <div class="watermark absolute inset-0 z-0 pointer-events-none
+                        opacity-10 blur-sm transition-all duration-500">
+                <img src="{{ asset('images/layanan/asam-urat.png') }}"
+                    class="w-full h-full object-cover">
             </div>
 
-            <h3 class="text-2xl font-bold text-slate-800 mb-2">
-                Cek Asam Urat
-            </h3>
+            {{-- CONTENT --}}
+            <div class="relative z-10">
 
-            <p class="text-slate-600 leading-relaxed">
-                Deteksi kadar asam urat dalam darah untuk mencegah nyeri sendi
-                dan gejala rematik akibat penumpukan kristal urat.
-            </p>
+                <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-6">
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/128/9851/9851810.png"
+                        alt="Icon"
+                        class="w-6 h-6 object-contain"
+                    >
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900 mb-2">
+                    Cek Asam Urat
+                </h3>
+
+                <p class="text-sm text-slate-600 mb-6">
+                    Pemeriksaan kadar asam urat dalam darah
+                </p>
+
+                <div class="mb-6">
+                    <span class="text-sm text-slate-600">Rp</span>
+                    <span class="text-3xl font-bold text-blue-600">12.000</span>
+                    <span class="text-sm text-slate-600"> / pemeriksaan</span>
+                </div>
+
+                <hr class="mb-6">
+
+                <ul class="space-y-3 text-sm text-slate-700">
+                    <li>✔ Deteksi dini asam urat tinggi</li>
+                    <li>✔ Proses cepat 5-10 menit</li>
+                    <li>✔ Alat standar kesehatan</li>
+                    <li>✔ Penjelsan hasil lengkap</li>
+                    <li>✔ Tips pencegahan</li>
+                </ul>
+
+                <a href="https://wa.me/6282246740801"
+                target="_blank"
+                class="order-btn mt-8 w-full py-3 rounded-xl border border-slate-300
+                        font-semibold transition text-center block">
+                    Pesan Sekarang
+                </a>
+
+            </div>
+        </div>
+
+        {{-- ================= CARD TEKANAN DARAH ================= --}}
+        <div class="service-card relative bg-white rounded-2xl border border-slate-200 p-6
+                    overflow-hidden
+                    hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+
+            {{-- WATERMARK --}}
+            <div class="watermark absolute inset-0 z-0 pointer-events-none
+                        opacity-10 blur-sm transition-all duration-500">
+                <img src="{{ asset('images/layanan/tekanan-darah.png') }}"
+                    class="w-full h-full object-cover">
+            </div>
+
+            {{-- CONTENT --}}
+            <div class="relative z-10">
+
+                <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mb-6">
+                    <img
+                        src="https://cdn-icons-png.flaticon.com/128/684/684262.png"
+                        alt="Icon"
+                        class="w-6 h-6 object-contain"
+                    >
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900 mb-2">
+                    Cek Tekanan Darah
+                </h3>
+
+                <p class="text-sm text-slate-600 mb-6">
+                    Pemeriksaan tekanan darah (tensi)
+                </p>
+
+                <div class="mb-6">
+                    <span class="text-3xl font-bold text-green-600">Free</span>
+                    <span class="text-sm text-slate-600"> / pemeriksaan</span>
+                </div>
+
+                <hr class="mb-6">
+
+                <ul class="space-y-3 text-sm text-slate-700">
+                    <li>✔ Cek sistolik & diastolik</li>
+                    <li>✔ Tensimeter digital akurat</li>
+                    <li>✔ Hasil instan</li>
+                    <li>✔ Deteksi hipertensi dini</li>
+                    <li>✔ Konsultasi kesehatan</li>
+                </ul>
+
+                <a href="https://wa.me/6282246740801"
+                target="_blank"
+                class="order-btn mt-8 w-full py-3 rounded-xl border border-slate-300
+                        font-semibold transition text-center block">
+                    Pesan Sekarang
+                </a>
+
+            </div>
         </div>
 
     </div>
 </section>
+
+{{-- ======================== SCRIPT CARD ======================== --}}
+<script>
+    const cards = document.querySelectorAll('.service-card');
+
+    cards.forEach(card => {
+        card.addEventListener('click', () => {
+
+            cards.forEach(c => {
+                // RESET CARD
+                c.classList.remove(
+                    'border-green-500',
+                    'ring-2',
+                    'ring-green-300',
+                    'shadow-green-200',
+                    'is-active'
+                );
+
+                // RESET BUTTON
+                const btn = c.querySelector('.order-btn');
+                btn.classList.remove('bg-green-500', 'text-white');
+            });
+
+            // AKTIF CARD
+            card.classList.add(
+                'border-green-500',
+                'ring-2',
+                'ring-green-300',
+                'shadow-green-200',
+                'is-active'
+            );
+
+            // AKTIF BUTTON
+            const button = card.querySelector('.order-btn');
+            button.classList.add('bg-green-500', 'text-white');
+        });
+    });
+</script>
+
+<style>
+    .service-card.is-active .watermark {
+        opacity: 0.28;      /* watermark lebih jelas */
+        filter: blur(0);    /* hilangkan blur */
+        transform: scale(1.05);
+    }
+</style>
+
+
+
+
+
+
+
 
 {{-- ======================== SECTION HUBUNGI & JADWAL ======================== --}}
-<section class="relative max-w-7xl mx-auto px-6 pb-24">
+<section class="relative overflow-hidden py-24">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    {{-- BACKGROUND GRADIENT --}}
+    <div class="absolute inset-0 bg-gradient-to-br from-emerald-50 via-white to-sky-50"></div>
 
-        {{-- =================== HUBUNGI KAMI =================== --}}
-        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
+    {{-- DECORATION BLUR --}}
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-emerald-300/20 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-sky-300/20 rounded-full blur-3xl"></div>
 
-            <h2 class="text-3xl font-bold text-slate-800 mb-3">Hubungi Kami</h2>
+    <div class="relative max-w-7xl mx-auto px-6">
 
-            <p class="text-slate-600 mb-6">
-                Silakan hubungi kami untuk informasi layanan, konsultasi obat,
-                atau pemesanan obat secara cepat.
-            </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
 
-            {{-- INFO KONTAK --}}
-            <div class="space-y-3">
+            {{-- =================== HUBUNGI KAMI =================== --}}
+            <div class="group bg-white/80 backdrop-blur-md
+                        rounded-3xl shadow-xl border border-white/60
+                        p-10 hover:shadow-2xl hover:-translate-y-1
+                        transition-all duration-300">
 
-                {{-- TELEPON --}}
-                <div class="flex items-center gap-3">
-                    📞
-                    <span class="text-slate-700 font-medium">
-                        Telp: 0822-4674-0801
-                    </span>
+                {{-- BADGE --}}
+                <span class="inline-block mb-4 px-4 py-1.5 rounded-full
+                             text-sm font-semibold tracking-wide
+                             text-emerald-700
+                             bg-emerald-100">
+                    Hubungi Kami
+                </span>
+
+                <h2 class="text-3xl font-bold text-slate-800 mb-3">
+                    Butuh Bantuan atau Konsultasi?
+                </h2>
+
+                <p class="text-slate-600 mb-8 leading-relaxed">
+                    Silakan hubungi kami untuk informasi terkait layanan, konsultasi obat,
+                    atau pemesanan obat secara cepat dan mudah.
+                </p>
+
+                {{-- INFO KONTAK --}}
+                <div class="space-y-4">
+
+                    {{-- TELEPON --}}
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full
+                                    bg-emerald-100 text-emerald-600
+                                    flex items-center justify-center">
+                            <img
+                                src="https://cdn-icons-png.flaticon.com/128/4321/4321231.png"
+                                alt="Telepon"
+                                class="w-5 h-5 object-contain"
+                            >
+                        </div>
+                        <span class="text-slate-700 font-medium">
+                            0822-4674-0801
+                        </span>
+                    </div>
+
+
+                    {{-- ALAMAT --}}
+                    <div class="flex items-start gap-4">
+                        <div class="w-10 h-10 rounded-full
+                                    bg-red-100 text-red-500
+                                    flex items-center justify-center
+                                    flex-shrink-0">
+                            <img
+                                src="https://cdn-icons-png.flaticon.com/128/819/819865.png"
+                                alt="Lokasi"
+                                class="w-5 h-5 object-contain"
+                            >
+                        </div>
+                        <span class="text-slate-700 font-medium leading-relaxed">
+                            Apotek Bhakti Medika Farma <br>
+                            Jl. Moch. Toha No.77, Cigereleng <br>
+                            Kec. Regol, Kota Bandung <br>
+                            Jawa Barat 40253
+                        </span>
+                    </div>
+
+
                 </div>
 
-                {{-- ALAMAT --}}
-                <div class="flex items-start gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="w-6 h-6 text-red-500 flex-shrink-0"
-                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 11a3 3 0 100-6 3 3 0 000 6z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 22s8-7.4 8-13a8 8 0 10-16 0c0 5.6 8 13 8 13z" />
-                    </svg>
+                {{-- CTA BUTTONS --}}
+                <div class="mt-10 flex flex-wrap gap-4">
 
-                    <span class="text-slate-700 font-medium leading-relaxed">
-                        Apotek Bhakti Medika Farma <br>
-                        Jl. Moch. Toha No.77, Cigereleng <br>
-                        Kec. Regol, Kota Bandung <br>
-                        Jawa Barat 40253
-                    </span>
+                    {{-- BUTTON WHATSAPP --}}
+                    <a href="https://wa.me/6282246740801"
+                       target="_blank"
+                       class="group inline-flex items-center gap-2
+                              px-7 py-3.5 rounded-full
+                              bg-gradient-to-r from-emerald-500 to-emerald-600
+                              text-white font-semibold
+                              shadow-lg shadow-emerald-500/30
+                              hover:shadow-2xl hover:shadow-emerald-500/40
+                              hover:-translate-y-0.5
+                              transition-all duration-300">
+
+                        <span>Via WhatsApp</span>
+                    </a>
+
+                    {{-- BUTTON LIHAT LOKASI --}}
+                    <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Moch.+Toha+No.77,+Cigereleng,+Regol,+Bandung"
+                       target="_blank"
+                       class="group inline-flex items-center gap-2
+                              px-7 py-3.5 rounded-full
+                              bg-gradient-to-r from-sky-500 to-indigo-600
+                              text-white font-semibold
+                              shadow-lg shadow-sky-500/30
+                              hover:shadow-2xl hover:shadow-sky-500/40
+                              hover:-translate-y-0.5
+                              transition-all duration-300">
+
+                        <span>Lihat Lokasi</span>
+                    </a>
+
                 </div>
 
             </div>
 
-            {{-- CTA BUTTONS --}}
-            <div class="mt-8 flex flex-wrap gap-4">
+            {{-- =================== JADWAL OPERASIONAL =================== --}}
+            <div class="group bg-white/80 backdrop-blur-md
+                        rounded-3xl shadow-xl border border-white/60
+                        p-10 hover:shadow-2xl hover:-translate-y-1
+                        transition-all duration-300">
 
-                {{-- BUTTON WHATSAPP --}}
-                <a href="https://wa.me/6282246740801"
-                   target="_blank"
-                   class="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full
-                          bg-gradient-to-r from-green-500 to-green-600
-                          text-white font-semibold shadow-xl
-                          hover:shadow-2xl hover:shadow-green-400/40
-                          hover:-translate-y-0.5 transition-all duration-300">
+                {{-- BADGE --}}
+                <span class="inline-block mb-4 px-4 py-1.5 rounded-full
+                             text-sm font-semibold tracking-wide
+                             text-sky-700
+                             bg-sky-100">
+                    Jam Layanan
+                </span>
 
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="w-5 h-5 text-white"
-                         fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M20.52 3.48A11.77 11.77 0 0012 0a11.94 11.94 0 00-10.4 17.94L0 24l6.22-1.63A11.94 11.94 0 0012 24a12 12 0 008.48-20.52zM12 21.5a9.5 9.5 0 01-4.84-1.3l-.35-.2-3.69 1 1-3.59-.23-.37A9.49 9.49 0 1112 21.5zm5-7.16c-.27-.13-1.6-.79-1.84-.88s-.43-.13-.62.13-.71.88-.87 1.06-.32.2-.59.07a7.74 7.74 0 01-2.28-1.4 8.49 8.49 0 01-1.57-1.94c-.16-.27 0-.42.12-.55s.27-.32.4-.48a1.78 1.78 0 00.27-.45.5.5 0 00-.02-.48c-.06-.13-.62-1.49-.85-2.04s-.46-.47-.62-.48h-.53a1 1 0 00-.72.34A3 3 0 005 9.1a5.21 5.21 0 00.56 2.69 11.89 11.89 0 004.93 5.38 16 16 0 001.6.74 3.81 3.81 0 002.6.16 2.63 2.63 0 001.72-1.21 2.17 2.17 0 00.15-1.21c-.06-.12-.24-.19-.5-.31z" />
-                    </svg>
+                <h2 class="text-3xl font-bold text-slate-800 mb-3">
+                    Jadwal Operasional
+                </h2>
 
-                    <span>Via WhatsApp</span>
-                </a>
+                <p class="text-slate-600 mb-8 leading-relaxed">
+                    Kami selalu siap melayani Anda sesuai jam operasional berikut:
+                </p>
 
-                {{-- BUTTON LIHAT LOKASI --}}
-                <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Moch.+Toha+No.77,+Cigereleng,+Regol,+Bandung"
-                   target="_blank"
-                   class="group inline-flex items-center gap-2 px-6 py-3.5 rounded-full
-                          bg-gradient-to-r from-blue-500 to-indigo-600
-                          text-white font-semibold shadow-xl
-                          hover:shadow-2xl hover:shadow-blue-400/40
-                          hover:-translate-y-0.5 transition-all duration-300">
+                {{-- TABEL JADWAL --}}
+                <div class="rounded-2xl border border-slate-200 overflow-hidden">
 
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         class="w-5 h-5 text-white"
-                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 11a3 3 0 100-6 3 3 0 000 6z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M12 22s8-7.4 8-13a8 8 0 10-16 0c0 5.6 8 13 8 13z" />
-                    </svg>
+                    <table class="w-full text-slate-700">
+                        <tbody>
+                            <tr class="border-b hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-semibold">Senin – Sabtu</td>
+                                <td class="px-6 py-4 text-right text-emerald-600 font-bold">
+                                    08.00 – 20.00
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-slate-50 transition">
+                                <td class="px-6 py-4 font-semibold">Minggu</td>
+                                <td class="px-6 py-4 text-right text-red-500 font-bold">
+                                    Tutup
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                    <span>Lihat Lokasi</span>
-                </a>
+                </div>
 
-            </div>
+                <div class="mt-5 text-sm text-slate-500 italic">
+                    *Jam operasional dapat berubah pada hari libur nasional.
+                </div>
 
-        </div>
-
-        {{-- =================== JADWAL OPERASIONAL =================== --}}
-        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 p-8">
-
-            <h2 class="text-3xl font-bold text-slate-800 mb-3">Jadwal Operasional</h2>
-
-            <p class="text-slate-600 mb-6">
-                Kami selalu siap melayani Anda sesuai jam operasional berikut:
-            </p>
-
-            {{-- TABEL JADWAL --}}
-            <div class="rounded-xl border border-slate-200 overflow-hidden">
-                <table class="w-full text-slate-700">
-                    <tbody>
-                        <tr class="border-b">
-                            <td class="px-5 py-3 font-semibold">Senin – Jumat</td>
-                            <td class="px-5 py-3 text-right">08.00 – 20.00</td>
-                        </tr>
-                        <tr>
-                            <td class="px-5 py-3 font-semibold">Sabtu – Minggu</td>
-                            <td class="px-5 py-3 text-right">Tutup</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="mt-4 text-sm text-slate-500">
-                *Jam operasional dapat berubah pada hari libur nasional.
             </div>
 
         </div>
@@ -311,6 +622,7 @@
     </div>
 
 </section>
+
 
 
 
@@ -353,18 +665,18 @@
 
 
 {{-- ================= FOOTER ================= --}}
-<footer class="bg-gradient-to-b from-slate-900 to-slate-950 text-gray-300 pt-20">
+<footer class="bg-gradient-to-b from-slate-800 to-slate-950 text-gray-300 pt-16">
 
-    <div class="max-w-7xl mx-auto px-6 grid gap-16 md:grid-cols-3">
+    <div class="max-w-7xl mx-auto px-4 md:px-6 grid gap-12 md:gap-16 md:grid-cols-3">
 
         {{-- ================= BRAND ================= --}}
-        <div>
+        <div class="text-center md:text-left">
 
             {{-- LOGO --}}
-            <div class="flex items-center gap-3 mb-5">
+            <div class="flex items-center justify-center md:justify-start gap-3 mb-5">
                 <img src="{{ asset('images/logo-apotek.svg') }}"
                      alt="Apotek Bhakti Medika Farma"
-                     class="h-9 w-auto">
+                     class="h-10 w-auto">
 
                 <span class="text-xl font-semibold text-white">
                     Bhakti Medika Farma
@@ -372,63 +684,60 @@
             </div>
 
             {{-- DESKRIPSI --}}
-            <p class="text-sm leading-relaxed text-white max-w-xs mb-6">
+            <p class="text-sm leading-relaxed text-white max-w-xs mx-auto md:mx-0 mb-6">
                 Menyediakan produk kesehatan berkualitas, aman,
                 dan terpercaya untuk kebutuhan keluarga Anda.
             </p>
 
             {{-- MARKETPLACE / SOSIAL ICON --}}
-            <div class="flex items-center gap-4">
+            <div class="flex items-center justify-center md:justify-start gap-4">
 
-                {{-- TikTok --}}
                 <a href="https://vt.tiktok.com/ZS5HehMDs/?page=Mall"
-                target="_blank"
-                   class="text-gray-400 hover:text-gray-200 transition duration-300">
+                   target="_blank"
+                   class="hover:opacity-100 transition">
                     <img src="{{ asset('images/tiktok-ft.png') }}"
-                         alt="Tokopedia"
-                         class="w-5 h-5 opacity-80 hover:opacity-100 transition">
+                         alt="TikTok"
+                         class="w-5 h-5 opacity-80">
                 </a>
 
-                {{-- Tokopedia --}}
                 <a href="https://tk.tokopedia.com/ZS5m7LkSk/"
-                target="_blank"
-                   class="text-gray-400 hover:text-gray-200 transition duration-300">
+                   target="_blank"
+                   class="hover:opacity-100 transition">
                     <img src="{{ asset('images/tokopedia-ft.png') }}"
                          alt="Tokopedia"
-                         class="w-6 h-6 opacity-80 hover:opacity-100 transition">
+                         class="w-6 h-6 opacity-80">
                 </a>
 
-                {{-- Lazada --}}
                 <a href="https://www.lazada.co.id/shop/apotek-bhakti-medika-farma/?spm=a2o4j.pdp_revamp.seller.1.65d64dff2BgHkW&itemId=8778758839&channelSource=pdp"
-                target="_blank"
-                   class="text-gray-400 hover:text-gray-200 transition duration-300">
+                   target="_blank"
+                   class="hover:opacity-100 transition">
                     <img src="{{ asset('images/lazada-ft.png') }}"
-                         alt="Shopee"
-                         class="w-8 h-8 opacity-80 hover:opacity-100 transition">
+                         alt="Lazada"
+                         class="w-8 h-8 opacity-80">
                 </a>
 
             </div>
         </div>
 
         {{-- ================= LINK CEPAT ================= --}}
-        <div class="ml-56">
+        <div class="text-center md:text-left md:pl-56">
 
             <p class="text-lg font-semibold text-white mb-6">
                 Link Cepat
             </p>
 
             <ul class="space-y-3 text-sm">
-                <li><a href="/" class="hover:text-yellow-400 transition">Beranda</a></li>
-                <li><a href="/tentang-kami" class="hover:text-yellow-400 transition">Tentang Kami</a></li>
-                <li><a href="/layanan" class="hover:text-yellow-400 transition">Layanan</a></li>
-                <li><a href="/produk" class="hover:text-yellow-400 transition">Produk</a></li>
-                <li><a href="/#kontak" class="hover:text-yellow-400 transition">Kontak</a></li>
+                <li><a href="/" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Beranda</a></li>
+                <li><a href="/tentang-kami" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Tentang Kami</a></li>
+                <li><a href="/layanan" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Layanan</a></li>
+                <li><a href="/produk" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Produk</a></li>
+                <li><a href="/#kontak" class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">Kontak</a></li>
             </ul>
 
         </div>
 
         {{-- ================= CONTACT INFO ================= --}}
-        <div>
+        <div class="text-center md:text-left">
 
             <p class="text-lg font-semibold text-white mb-6">
                 Contact Info
@@ -437,66 +746,66 @@
             <ul class="space-y-4 text-sm text-gray-300">
 
                 {{-- EMAIL --}}
-                <li class="flex items-center gap-4">
+                <li class="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start gap-3 md:gap-4">
                     <svg class="w-5 h-5 text-white"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="2"
-                         viewBox="0 0 24 24">
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24">
                         <path d="M4 4h16v16H4z"></path>
                         <path d="M22 6l-10 7L2 6"></path>
                     </svg>
 
                     <a href="mailto:bhaktimedikafarma2@gmail.com"
-                       class="hover:text-yellow-400 transition">
+                    class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">
                         bhaktimedikafarma2@gmail.com
                     </a>
                 </li>
 
                 {{-- TELEPON --}}
-                <li class="flex items-center gap-4">
+                <li class="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start gap-3 md:gap-4">
                     <svg class="w-5 h-5 text-white"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="2"
-                         viewBox="0 0 24 24">
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24">
                         <path d="M22 16.92V21a2 2 0 01-2.18 2
-                                 19.79 19.79 0 01-8.63-3.07
-                                 19.5 19.5 0 01-6-6
-                                 19.79 19.79 0 01-3.07-8.67
-                                 A2 2 0 014 3h4.09
-                                 a2 2 0 012 1.72
-                                 12.05 12.05 0 00.57 2.57
-                                 2 2 0 01-.45 2.11L9.09 10.91
-                                 a16 16 0 006 6l1.51-1.51
-                                 a2 2 0 012.11-.45
-                                 12.05 12.05 0 002.57.57
-                                 a2 2 0 011.72 2z"></path>
+                                19.79 19.79 0 01-8.63-3.07
+                                19.5 19.5 0 01-6-6
+                                19.79 19.79 0 01-3.07-8.67
+                                A2 2 0 014 3h4.09
+                                a2 2 0 012 1.72
+                                12.05 12.05 0 00.57 2.57
+                                2 2 0 01-.45 2.11L9.09 10.91
+                                a16 16 0 006 6l1.51-1.51
+                                a2 2 0 012.11-.45
+                                12.05 12.05 0 002.57.57
+                                a2 2 0 011.72 2z"></path>
                     </svg>
 
                     <a href="https://wa.me/6282246740801"
-                       target="_blank"
-                       class="hover:text-yellow-400 transition">
+                    target="_blank"
+                    class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">
                         +62 822-4674-0801
                     </a>
                 </li>
 
                 {{-- ALAMAT --}}
-                <li class="flex items-start gap-4">
-                    <svg class="w-5 h-5 text-white mt-0.5"
-                         fill="none"
-                         stroke="currentColor"
-                         stroke-width="2"
-                         viewBox="0 0 24 24">
+                <li class="flex flex-col md:flex-row items-center md:items-start justify-center md:justify-start gap-3 md:gap-4">
+                    <svg class="w-5 h-5 text-white mt-0.5 md:mt-1"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24">
                         <path d="M12 21s-6-5.686-6-10
-                                 a6 6 0 1112 0
-                                 c0 4.314-6 10-6 10z"></path>
+                                a6 6 0 1112 0
+                                c0 4.314-6 10-6 10z"></path>
                         <circle cx="12" cy="11" r="2"></circle>
                     </svg>
 
                     <a href="https://www.google.com/maps/search/?api=1&query=Jl.+Moch.+Toha+No.77,+Cigereleng,+Regol,+Bandung"
-                       target="_blank"
-                       class="hover:text-yellow-400 transition">
+                    target="_blank"
+                    class="text-center md:text-left hover:bg-gradient-to-r hover:from-green-400 hover:to-cyan-400 hover:bg-clip-text hover:text-transparent">
                         Apotek Bhakti Medika Farma<br>
                         Jl. Moch. Toha No.77, Cigereleng<br>
                         Kec. Regol, Kota Bandung<br>
@@ -507,13 +816,14 @@
             </ul>
         </div>
 
+
     </div>
 
     {{-- DIVIDER --}}
-    <div class="border-t border-slate-800 mt-16"></div>
+    <div class="border-t border-slate-800 mt-14"></div>
 
     {{-- COPYRIGHT --}}
-    <div class="text-center py-6 text-sm text-gray-500">
+    <div class="text-center py-6 text-sm text-gray-500 px-4">
         © 2025 Apotek Bhakti Medika Farma. All rights reserved.
     </div>
 
