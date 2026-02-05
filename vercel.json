@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.6.0"
+    }
+  },
+  "routes": [
+    {
+      "src": "/build/(.*)",
+      "dest": "/public/build/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/api/index.php"
+    }
+  ],
+  "buildCommand": "npm run build",
+  "outputDirectory": "public/build",
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "APP_URL": "https://apotek-bmf-project-agz8-git-main-nazril-fks-projects.vercel.app",
+    "APP_KEY": "base64:3FChoBjAp3gFwcEMLgc+E8iiPdlKCNUzQoGGuFXb0i0=",
+    "CACHE_DRIVER": "array",
+    "SESSION_DRIVER": "cookie",
+    "LOG_CHANNEL": "stderr",
+    "VIEW_COMPILED_PATH": "/tmp"
+  }
+}
