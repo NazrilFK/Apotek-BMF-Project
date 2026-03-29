@@ -339,6 +339,7 @@ function produkFilter() {
             { id: 52, nama: 'Polysilane', kategori: 'Tablet & Kapsul', gambar: '{{ asset('images/produk/tablet-kapsul/87.png') }}' },
             { id: 53, nama: 'Promag', kategori: 'Tablet & Kapsul', gambar: '{{ asset('images/produk/tablet-kapsul/90.png') }}' },
             { id: 54, nama: 'Mylanta Antasid', kategori: 'Tablet & Kapsul', gambar: '{{ asset('images/produk/tablet-kapsul/91.png') }}' },
+            { id: 55, nama: 'Biolysin Kids Rasa Anggur', kategori: 'Tablet & Kapsul', gambar: '{{ asset('images/produk/tablet-kapsul/34.png') }}' },
 
             // Sirup
             { id: 1, nama: 'Herbavomitz', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/89.png') }}' },
@@ -397,7 +398,7 @@ function produkFilter() {
             { id: 55, nama: 'Laserin Madu Anak', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/31.png') }}' },
             { id: 56, nama: 'Flucadex Flu & Batuk Anak', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/32.png') }}' },
             { id: 57, nama: 'TJ Joybie Rasa Jeruk', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/33.png') }}' },
-            { id: 58, nama: 'Biolysin Kids Anak Rasa Anggur', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/34.png') }}' },
+            { id: 58, nama: 'Sirplus Sirup Strawberry', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/88.png') }}' },
             { id: 59, nama: 'Imboost Force Vitamin Anak', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/35.png') }}' },
             { id: 60, nama: 'Biolysin Smart Anak Rasa Jeruk', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/30.png') }}' },
             { id: 61, nama: 'OB Herbal Junior Rasa Madu', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/29.png') }}' },
@@ -425,6 +426,9 @@ function produkFilter() {
             { id: 83, nama: 'Ikadryl Rasa Apel', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/2.png') }}' },
             { id: 84, nama: 'Allerin Flu & Batuk', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/3.png') }}' },
             { id: 85, nama: 'Decolsin Flu & Batuk', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/4.png') }}' },
+            { id: 86, nama: 'Wormetrin Sirup Rasa Jeruk', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/54.png') }}' },
+            { id: 87, nama: 'Sirplus Sirup Jeruk', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/85.png') }}' },
+            { id: 88, nama: 'Sirplus Sirup Melon', kategori: 'Sirup', gambar: '{{ asset('images/produk/sirup/90.png') }}' },
 
 
             // Salep & Krim
@@ -454,6 +458,13 @@ function produkFilter() {
             { id: 24, nama: 'Vicks Vaporub Saku', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/122.png') }}' },
             { id: 25, nama: 'Vicks Vaporub', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/123.png') }}' },
             { id: 26, nama: 'Vicks Inhaler', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/124.png') }}' },
+            { id: 27, nama: 'Salep Neo Ultrasiline', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/24.png') }}' },
+            { id: 28, nama: 'Hot In Cream Aromatherapy', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/26.png') }}' },
+            { id: 29, nama: 'Hot In Cream Botol', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/28.png') }}' },
+            { id: 30, nama: 'Hot In Cream Strong Botol', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/29.png') }}' },
+            { id: 31, nama: 'Minyak Gosok Cap Tawon', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/32.png') }}' },
+            { id: 32, nama: 'Hot In Cream Strong Tube', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/33.png') }}' },
+            { id: 34, nama: 'Hot In Cream Tube', kategori: 'Salep & Krim', gambar: '{{ asset('images/produk/salep-krim/34.png') }}' },
 
 
             // Obat Tetes
@@ -468,7 +479,7 @@ function produkFilter() {
             { id: 9, nama: 'Insto Regular', kategori: 'Obat Tetes', gambar: '{{ asset('images/produk/tetes/137.png') }}' },
 
             // Obat Herbal & Umum
-            { id: 1, nama: 'Digital Thermometer', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/190.png') }}' },
+            { id: 1, nama: 'Digital Thermometer Flexible', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/190.png') }}' },
             { id: 2, nama: 'Onemed Plester', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/191.png') }}' },
             { id: 3, nama: 'Daryant-Tulle', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/192.png') }}' },
             { id: 4, nama: 'hansaplast Jumbo', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/193.png') }}' },
@@ -486,7 +497,7 @@ function produkFilter() {
             { id: 16, nama: 'Plossa Red Hot', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/126.png') }}' },
             { id: 17, nama: 'Plossa Blue Mountain', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/127.png') }}' },
             { id: 18, nama: 'Minyak Otot Geliga', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/105.png') }}' },
-            { id: 19, nama: 'Ika Gandapura', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/107.png') }}' },
+            { id: 19, nama: 'Ika Minyak Gandapura', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/107.png') }}' },
             { id: 20, nama: 'Cap Lang Aromatherapy', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/108.png') }}' },
             { id: 21, nama: 'Sidola Kayu Putih', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/110.png') }}' },
             { id: 22, nama: 'Sidola Angin Cap Kapak', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/112.png') }}' },
@@ -500,6 +511,27 @@ function produkFilter() {
             { id: 30, nama: 'Tolak Linu Herbal Mint', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/104.png') }}' },
             { id: 31, nama: 'Lamandel', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/103.png') }}' },
             { id: 32, nama: 'Antangin Junior', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/102.png') }}' },
+            { id: 33, nama: 'Balsem Lang', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/35.png') }}' },
+            { id: 34, nama: 'Acnol Lotion Jerawat', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/22.png') }}' },
+            { id: 35, nama: 'Cap Lang Minyak Angin', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/23.png') }}' },
+            { id: 36, nama: 'My Baby Minyak Telon Plus', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/24.png') }}' },
+            { id: 37, nama: 'Sabun JF Anti Acne', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/25.png') }}' },
+            { id: 38, nama: 'Sabun JF Dermaned', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/26.png') }}' },
+            { id: 39, nama: 'Kool Fever Bayi', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/28.png') }}' },
+            { id: 40, nama: 'Oilum Cleansing Bar', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/29.png') }}' },
+            { id: 41, nama: 'Kool Fever Anak', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/30.png') }}' },
+            { id: 42, nama: 'Bye Bye Fever Anak', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/31.png') }}' },
+            { id: 43, nama: 'Altamed Alcohol Swab', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/32.png') }}' },
+            { id: 44, nama: 'H&W Duckbill Face Mask', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/33.png') }}' },
+            { id: 45, nama: 'Surgical Face Mask', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/34.png') }}' },
+            { id: 46, nama: 'Harmonie Cutton Buds', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/37.png') }}' },
+            { id: 47, nama: 'Medika Alcohol 70%', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/38.png') }}' },
+            { id: 48, nama: 'Medika Rivanol 100 ml', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/39.png') }}' },
+            { id: 49, nama: 'Medika Rivanol 300 ml', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/40.png') }}' },
+            { id: 50, nama: 'Herocyn', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/42.png') }}' },
+            { id: 51, nama: 'Ika Talk Salicyl Menthol', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/43.png') }}' },
+            { id: 52, nama: 'Digital Thermometer Rigid', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/44.png') }}' },
+            { id: 53, nama: 'Madu Murni Nusantara', kategori: 'Obat Herbal & Umum', gambar: '{{ asset('images/produk/herbal-umum/46.png') }}' },
 
         ],
 
